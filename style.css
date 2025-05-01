@@ -1,0 +1,22 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  background: #f0f0f0;
+}
+
+h1 {
+  color: #333;
+}
+
+svg {
+  background: #fff;
+  border: 1px solid #ccc;
+  margin: 20px auto;
+  display: block;
+}
+
+#stats {
+  font-size: 18px;
+  margin: 10px;
+  color: #555;
+}
