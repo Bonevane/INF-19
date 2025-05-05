@@ -7,11 +7,11 @@ let nodes = [],
   nextId = 0;
 
 // HUBS
-const numHubs = 4;
-const nodesPerHub = 50;
+const numHubs = 8;
+const nodesPerHub = 30;
 
 // HUBLESS NODES
-const initialHublessCount = 50; // Define how many hubless nodes you want initially
+const initialHublessCount = 200; // Define how many hubless nodes you want initially
 const minHublessConnections = 5; // Minimum connections for hubless nodes
 const numHublessConnections = 5; // Number of connections for hubless nodes
 const hublessRewireProbability = 0.1; // Chance a hubless node rewires
@@ -29,7 +29,7 @@ const hubSampleSize = 2; // Number of nodes to sample from other hubs
 
 // DISEASE PARAMETERS
 const growthRate = 1; // Number of new nodes to add each step
-const transmissionProb = 0.2;
+const transmissionProb = 0.05;
 const deathProbability = 0.02;
 const partialInfectionProb = 0.05;
 const recoveryTime = 10000; // milliseconds
@@ -608,7 +608,7 @@ function step() {
     growCommunity(growthRate);
     spreadInfection();
     vaccinate();
-    switchHubRoutine(); // Add routine switching logic
+    // switchHubRoutine(); // Add routine switching logic
     updateGraph();
     updateGraphTimeSeries();
   }
