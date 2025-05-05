@@ -8,11 +8,19 @@ let nodes = [],
 
 const transmissionProb = 0.2;
 const deathProbability = 0.02;
+const partialInfectionProb = 0.05;
 const recoveryTime = 10000; // milliseconds
-const vaccineStartTime = 10000;
+const vaccineStartTime = 100000;
+const immunityDuration = 30000;
 const simulationStartTime = Date.now();
+
 let vaccinated = false;
 let deathCount = 0;
+let currentRecoveries = 0;
+
+const deathCounts = []; // Array to track death count over time
+const infectionCounts = []; // Array to track infection count over time
+const recoveryCounts = []; // Array to track recovery count over time
 
 function statusColor(status) {
   return (
@@ -32,6 +40,8 @@ function createInitialNetwork() {
       id: nextId++,
       status: "healthy",
       infectedAt: null,
+      recoveredAt: null,
+      vaccinatedAt: null,
       alive: true,
     });
   }
@@ -85,14 +95,6 @@ svg.call(
     })
 );
 
-//   let link = svg.append("g").attr("stroke", "#ccc").selectAll("line");
-
-// let node = svg
-//   .append("g")
-//   .attr("stroke", "#fff")
-//   .attr("stroke-width", 1.5)
-//   .selectAll("circle");
-
 function updateGraph() {
   link = link.data(links);
   link.exit().remove();
@@ -133,9 +135,11 @@ simulation.on("tick", ticked);
 function spreadInfection() {
   const now = Date.now();
   const nodesToRemove = [];
+  let currentInfections = 0;
 
   nodes.forEach((n) => {
     if (n.status === "infected") {
+      currentInfections++;
       // Death check
       if (Math.random() < deathProbability) {
         nodesToRemove.push(n);
@@ -144,7 +148,27 @@ function spreadInfection() {
         n.alive = false;
       } else if (Date.now() - n.infectedAt > recoveryTime) {
         n.status = "recovered";
+        n.recoveredAt = now;
+        currentRecoveries++; // Increment recovery count
       }
+    }
+
+    if (
+      n.status === "recovered" &&
+      n.recoveredAt &&
+      now - n.recoveredAt > immunityDuration
+    ) {
+      n.status = "healthy";
+      n.recoveredAt = null;
+    }
+
+    if (
+      n.status === "vaccinated" &&
+      n.vaccinatedAt &&
+      now - n.vaccinatedAt > immunityDuration
+    ) {
+      n.status = "healthy";
+      n.vaccinatedAt = null;
     }
   });
 
@@ -168,8 +192,20 @@ function spreadInfection() {
         source.status = "infected";
         source.infectedAt = now;
       }
+    } else if (
+      source.status === "infected" &&
+      (target.status === "vaccinated" || target.status === "recovered")
+    ) {
+      if (Math.random() < partialInfectionProb) {
+        target.status = "infected";
+        target.infectedAt = now;
+      }
     }
   });
+
+  infectionCounts.push(currentInfections); // Add current infections to the array
+  recoveryCounts.push(currentRecoveries); // Add current recoveries to the array
+  deathCounts.push(deathCount); // Track death count
 
   // Remove dead nodes from node and link lists
   nodes = nodes.filter((n) => !nodesToRemove.includes(n));
@@ -198,9 +234,81 @@ function vaccinate() {
     nodes.forEach((n) => {
       if (n.status === "healthy" && Math.random() < 0.4) {
         n.status = "vaccinated";
+        n.vaccinatedAt = Date.now();
       }
     });
   }
+}
+
+const margin = { top: 20, right: 30, bottom: 40, left: 40 };
+const graphWidth = 800 - margin.left - margin.right;
+const graphHeight = 300 - margin.top - margin.bottom;
+
+const graphSvg = d3
+  .select("#graph")
+  .append("svg")
+  .attr("width", graphWidth + margin.left + margin.right)
+  .attr("height", graphHeight + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+const xScale = d3.scaleLinear().range([0, graphWidth]);
+const yScale = d3.scaleLinear().range([graphHeight, 0]);
+
+const lineDeaths = d3
+  .line()
+  .x((d, i) => xScale(i))
+  .y((d) => yScale(d));
+const lineInfections = d3
+  .line()
+  .x((d, i) => xScale(i))
+  .y((d) => yScale(d));
+
+function updateGraphTimeSeries() {
+  // Update scales
+  xScale.domain([
+    0,
+    Math.max(deathCounts.length, infectionCounts.length, recoveryCounts.length),
+  ]);
+  yScale.domain([
+    0,
+    Math.max(
+      d3.max(deathCounts),
+      d3.max(infectionCounts),
+      d3.max(recoveryCounts)
+    ),
+  ]);
+
+  graphSvg
+    .selectAll(".line-deaths")
+    .data([deathCounts])
+    .join("path")
+    .attr("class", "line-deaths")
+    .attr("fill", "none")
+    .attr("stroke", "black")
+    .attr("stroke-width", 2)
+    .attr("d", lineDeaths);
+
+  graphSvg
+    .selectAll(".line-infections")
+    .data([infectionCounts])
+    .join("path")
+    .attr("class", "line-infections")
+    .attr("fill", "none")
+    .attr("stroke", "red")
+    .attr("stroke-width", 2)
+    .attr("d", lineInfections);
+
+  // Add the line for recoveries
+  graphSvg
+    .selectAll(".line-recoveries")
+    .data([recoveryCounts])
+    .join("path")
+    .attr("class", "line-recoveries")
+    .attr("fill", "none")
+    .attr("stroke", "blue")
+    .attr("stroke-width", 2)
+    .attr("d", lineInfections); // You can reuse lineInfections or create a new line for recoveries
 }
 
 function step() {
@@ -208,7 +316,8 @@ function step() {
   spreadInfection();
   vaccinate();
   updateGraph();
+  updateGraphTimeSeries();
 }
 
-setInterval(step, 1000);
+setInterval(step, 500);
 updateGraph();
