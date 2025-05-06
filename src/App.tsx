@@ -1,5 +1,4 @@
 import { Routes, Route, Link } from 'react-router-dom';
-import { Activity } from 'lucide-react';
 import SimulationPage from './pages/SimulationPage';
 import AboutPage from './pages/AboutPage';
 import './App.css';

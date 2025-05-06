@@ -4,7 +4,7 @@ import { SimulationParams, SimulationStatistics } from '../utils/types';
 import { 
   createInitialNetwork, 
   spreadInfection, 
-  switchHubRoutine, 
+  // switchHubRoutine, 
   growCommunity, 
   vaccinate 
 } from '../utils/simulationUtils';
@@ -100,14 +100,14 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
       params.interHubLinkStrength,
       params.intraHubLinkStrength,
       params.interHubLinkDistance,
-      params.intraHubLinkDistance
+      // params.intraHubLinkDistance
     );
     
     // Create SVG container with zoom capability
     containerRef.current = svg.append("g");
     
     svg.call(
-      d3.zoom()
+      d3.zoom<SVGSVGElement, unknown>()
         .scaleExtent([params.zoomMin, params.zoomMax])
         .on("zoom", (event) => {
           containerRef.current?.attr("transform", event.transform);
@@ -149,7 +149,7 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
           .attr("r", params.nodeRadius);
       })
       .call(
-        d3.drag()
+        d3.drag<SVGCircleElement, any>()
           .on("start", dragstarted)
           .on("drag", dragged)
           .on("end", dragended)
@@ -206,12 +206,12 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
     
     linkSelection.exit().remove();
     
-    const linkEnter = linkSelection
-      .enter()
-      .append("line")
-      .attr("stroke", "#ccc")
-      .attr("stroke-opacity", 0.6)
-      .attr("stroke-width", 1);
+    // const linkEnter = linkSelection
+    //   .enter()
+    //   .append("line")
+    //   .attr("stroke", "#ccc")
+    //   .attr("stroke-opacity", 0.6)
+    //   .attr("stroke-width", 1);
     
     // Update nodes
     const nodeSelection = containerRef.current
@@ -221,19 +221,19 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
     
     nodeSelection.exit().remove();
     
-    const nodeEnter = nodeSelection
-      .enter()
-      .append("circle")
-      .attr("r", params.nodeRadius)
-      .attr("fill", (d: any) => statusColor(d.status))
-      .attr("stroke", "#fff")
-      .attr("stroke-width", 1.5)
-      .call(
-        d3.drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended)
-      );
+    // const nodeEnter = nodeSelection
+    //   .enter()
+    //   .append("circle")
+    //   .attr("r", params.nodeRadius)
+    //   .attr("fill", (d: any) => statusColor(d.status))
+    //   .attr("stroke", "#fff")
+    //   .attr("stroke-width", 1.5)
+    //   .call(
+    //     d3.drag()
+    //       .on("start", dragstarted)
+    //       .on("drag", dragged)
+    //       .on("end", dragended)
+    //   );
     
     // Apply the simulation
     simulationRef.current?.nodes(nodesRef.current);

@@ -13,7 +13,7 @@ export function createInitialNetwork(
   numHublessConnections: number,
   minIntraHubConnections: number,
   numIntraHubConnections: number,
-  numInterHubConnections: number,
+  // numInterHubConnections: number,
   hubSampleSize: number,
   interHubLinkStrength: number,
   intraHubLinkStrength: number,
