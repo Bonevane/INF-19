@@ -118,12 +118,12 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
     const link = containerRef.current
       .append("g")
       .attr("stroke", "#ccc")
-      .attr("stroke-opacity", 0.6)
+      .attr("stroke-opacity", 0.3)
       .selectAll("line")
       .data(linksRef.current)
       .enter()
       .append("line")
-      .attr("stroke-width", 1);
+      .attr("stroke-width", 0.6);
     
     // Create nodes
     const node = containerRef.current
@@ -135,7 +135,19 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
       .attr("r", params.nodeRadius)
       .attr("fill", d => statusColor(d.status))
       .attr("stroke", "#fff")
-      .attr("stroke-width", 1.5)
+      .attr("stroke-width", 0)
+      .on("mouseover", function () {
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr("r", params.nodeRadius * 1.3);
+      })
+      .on("mouseout", function () {
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr("r", params.nodeRadius);
+      })
       .call(
         d3.drag()
           .on("start", dragstarted)
