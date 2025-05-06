@@ -13,7 +13,7 @@ export function createInitialNetwork(
   numHublessConnections: number,
   minIntraHubConnections: number,
   numIntraHubConnections: number,
-  // numInterHubConnections: number,
+  numInterHubConnections: number,
   hubSampleSize: number,
   interHubLinkStrength: number,
   intraHubLinkStrength: number,
@@ -85,7 +85,7 @@ export function createInitialNetwork(
   hubs.forEach(hub => {
     hub.forEach(node1 => {
       const connections = d3.shuffle(hub.filter(n => n !== node1))
-        .slice(0, minIntraHubConnections + Math.floor(Math.random() * numIntraHubConnections));
+        .slice(0, minIntraHubConnections + numInterHubConnections - numIntraHubConnections + Math.floor(Math.random() * numIntraHubConnections));
       
       connections.forEach(node2 => {
         linksRef.current.push({

@@ -100,7 +100,7 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
       params.interHubLinkStrength,
       params.intraHubLinkStrength,
       params.interHubLinkDistance,
-      // params.intraHubLinkDistance
+      params.intraHubLinkDistance
     );
     
     // Create SVG container with zoom capability
