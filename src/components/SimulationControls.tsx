@@ -516,14 +516,14 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
                 </div>
               </label>
               <span className="text-xs font-medium text-gray-700">
-                {params.transmissionProb.toFixed(2)}
+                {params.transmissionProb.toFixed(3)}
               </span>
             </div>
             <input
               type="range"
               min="0"
-              max="1"
-              step="0.01"
+              max="0.25"
+              step="0.001"
               value={params.transmissionProb}
               onChange={(e) => handleSliderChange(e, "transmissionProb")}
               className="w-full"
@@ -542,14 +542,14 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
                 </div>
               </label>
               <span className="text-xs font-medium text-gray-700">
-                {params.partialInfectionProb.toFixed(2)}
+                {params.partialInfectionProb.toFixed(3)}
               </span>
             </div>
             <input
               type="range"
               min="0"
-              max="0.2"
-              step="0.01"
+              max="0.1"
+              step="0.001"
               value={params.partialInfectionProb}
               onChange={(e) => handleSliderChange(e, "partialInfectionProb")}
               className="w-full"
@@ -568,14 +568,14 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
                 </div>
               </label>
               <span className="text-xs font-medium text-gray-700">
-                {params.deathProbability.toFixed(2)}
+                {params.deathProbability.toFixed(3)}
               </span>
             </div>
             <input
               type="range"
               min="0"
               max="0.2"
-              step="0.01"
+              step="0.001"
               value={params.deathProbability}
               onChange={(e) => handleSliderChange(e, "deathProbability")}
               className="w-full"
@@ -598,7 +598,7 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
             <input
               type="range"
               min="1000"
-              max="20000"
+              max="30000"
               step="1000"
               value={params.recoveryTime}
               onChange={(e) => handleSliderChange(e, "recoveryTime")}
