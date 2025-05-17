@@ -17,8 +17,8 @@ const LandingPage: React.FC = () => {
             Epidemic Simulator
           </h1>
           <p className="text-xl text-white/80 max-w-2xl text-center mb-12">
-            Explore the dynamics of disease spread through interactive network
-            simulation
+            Explore the dynamics of disease spread through an interactive
+            network simulation
           </p>
           <button
             onClick={() => navigate("/simulation")}
