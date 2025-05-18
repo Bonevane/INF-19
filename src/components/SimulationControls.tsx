@@ -99,7 +99,7 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
             <input
               type="range"
               min="1"
-              max="20"
+              max="50"
               step="1"
               value={params.numHubs}
               onChange={(e) => handleSliderChange(e, "numHubs")}
@@ -125,7 +125,7 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
             <input
               type="range"
               min="5"
-              max="50"
+              max="70"
               step="1"
               value={params.nodesPerHub}
               onChange={(e) => handleSliderChange(e, "nodesPerHub")}
@@ -156,7 +156,7 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
               <input
                 type="range"
                 min="0"
-                max="500"
+                max="100"
                 step="10"
                 value={params.initialHublessCount}
                 onChange={(e) => handleSliderChange(e, "initialHublessCount")}

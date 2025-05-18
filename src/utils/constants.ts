@@ -15,7 +15,7 @@ export const defaultSimulationParams: SimulationParams = {
   minIntraHubConnections: 3,
   numIntraHubConnections: 3,
   numInterHubConnections: 3,
-  hubSwitchProbability: 0.1,
+  hubSwitchProbability: 0,
   interHubLinkStrength: 0.05,
   intraHubLinkStrength: 0.9,
   interHubLinkDistance: 140,

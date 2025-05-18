@@ -4,7 +4,7 @@ import { SimulationParams, SimulationStatistics } from "../utils/types";
 import {
   createInitialNetwork,
   spreadInfection,
-  // switchHubRoutine,
+  switchHubRoutine,
   growCommunity,
   vaccinate,
 } from "../utils/simulationUtils";
@@ -98,12 +98,11 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
     ctx.stroke();
 
     // Draw nodes
-    ctx.globalAlpha = 1.0;
+    ctx.globalAlpha = 1;
     nodesRef.current.forEach((node) => {
       ctx.beginPath();
       ctx.fillStyle = statusColor(node.status);
 
-      // If this node is being hovered/dragged, make it slightly larger
       const radius = params.nodeRadius;
 
       ctx.arc(node.x, node.y, radius, 0, Math.PI * 2);
@@ -116,7 +115,7 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
   // Function to handle canvas zoom
   const handleZoom = (event: any) => {
     zoomTransformRef.current = event.transform;
-    drawCanvas();
+    // drawCanvas();
   };
 
   // Function to initialize or reset the simulation
@@ -187,7 +186,7 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
       )
       .force("charge", d3.forceManyBody().strength(params.chargeStrength))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .alphaDecay(0.05)
+      .alphaDecay(0.02)
       .alphaMin(0.05)
       .velocityDecay(0.1)
       .on("tick", drawCanvas);
@@ -223,7 +222,7 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
     );
 
     simulationRef.current.alpha(params.simulationAlpha).restart();
-    drawCanvas();
+    // drawCanvas();
   };
 
   // Simulation step
@@ -254,16 +253,16 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
     );
 
     // Run network dynamics (hub switching)
-    // switchHubRoutine(
-    //   nodesRef,
-    //   linksRef,
-    //   params.hublessRewireProbability,
-    //   params.hubSwitchProbability,
-    //   params.interHubLinkStrength,
-    //   params.intraHubLinkStrength,
-    //   params.interHubLinkDistance,
-    //   params.intraHubLinkDistance
-    // );
+    switchHubRoutine(
+      nodesRef,
+      linksRef,
+      params.hublessRewireProbability,
+      params.hubSwitchProbability,
+      params.interHubLinkStrength,
+      params.intraHubLinkStrength,
+      params.interHubLinkDistance,
+      params.intraHubLinkDistance
+    );
 
     // Check if it's time to vaccinate
     if (Date.now() - simulationStartTimeRef.current > params.vaccineStartTime) {
