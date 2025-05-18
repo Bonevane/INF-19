@@ -187,6 +187,7 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
       .force("charge", d3.forceManyBody().strength(params.chargeStrength))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .alphaDecay(0.02)
+      .alpha(0.08)
       .alphaMin(0.05)
       .velocityDecay(0.1)
       .on("tick", drawCanvas);
@@ -253,16 +254,16 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
     );
 
     // Run network dynamics (hub switching)
-    switchHubRoutine(
-      nodesRef,
-      linksRef,
-      params.hublessRewireProbability,
-      params.hubSwitchProbability,
-      params.interHubLinkStrength,
-      params.intraHubLinkStrength,
-      params.interHubLinkDistance,
-      params.intraHubLinkDistance
-    );
+    // switchHubRoutine(
+    //   nodesRef,
+    //   linksRef,
+    //   params.hublessRewireProbability,
+    //   params.hubSwitchProbability,
+    //   params.interHubLinkStrength,
+    //   params.intraHubLinkStrength,
+    //   params.interHubLinkDistance,
+    //   params.intraHubLinkDistance
+    // );
 
     // Check if it's time to vaccinate
     if (Date.now() - simulationStartTimeRef.current > params.vaccineStartTime) {

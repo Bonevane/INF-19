@@ -6,7 +6,7 @@ export const defaultSimulationParams: SimulationParams = {
   nodesPerHub: 30,
 
   // HUBLESS NODES
-  initialHublessCount: 100,
+  initialHublessCount: 200,
   minHublessConnections: 5,
   numHublessConnections: 5,
   hublessRewireProbability: 0.05,

@@ -156,18 +156,14 @@ export function spreadInfection(
         n.status = "recovered";
         n.recoveredAt = now;
       }
-    }
-
-    if (
+    } else if (
       n.status === "recovered" &&
       n.recoveredAt &&
       now - n.recoveredAt > recoveryTime * 3
     ) {
       n.status = "healthy";
       n.recoveredAt = null;
-    }
-
-    if (
+    } else if (
       n.status === "vaccinated" &&
       n.vaccinatedAt &&
       now - n.vaccinatedAt > recoveryTime * 3
@@ -469,8 +465,8 @@ export function growCommunity(
   const count = params.growthRate;
 
   for (let i = 0; i < count; i++) {
-    // 80% chance to add to a hub, 20% chance to be hubless
-    const useHub = Math.random() < 0.8;
+    // 60% chance to add to a hub, 40% chance to be hubless
+    const useHub = Math.random() < 0.6;
 
     if (useHub && params.numHubs > 0) {
       const assignedHub = Math.floor(Math.random() * params.numHubs);
