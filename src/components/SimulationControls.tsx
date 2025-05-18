@@ -156,7 +156,7 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
               <input
                 type="range"
                 min="0"
-                max="100"
+                max="1000"
                 step="10"
                 value={params.initialHublessCount}
                 onChange={(e) => handleSliderChange(e, "initialHublessCount")}
