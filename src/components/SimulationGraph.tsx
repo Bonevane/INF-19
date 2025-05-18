@@ -4,7 +4,7 @@ import { SimulationParams, SimulationStatistics } from "../utils/types";
 import {
   createInitialNetwork,
   spreadInfection,
-  switchHubRoutine,
+  // switchHubRoutine,
   growCommunity,
   vaccinate,
 } from "../utils/simulationUtils";
