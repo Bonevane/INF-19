@@ -1,7 +1,7 @@
 import { SimulationNode, SimulationLink, SimulationParams } from "./types";
 import * as d3 from "d3";
 
-// Helper function to create hubs and initial network
+// Initializing a new network
 export function createInitialNetwork(
   nodesRef: React.MutableRefObject<SimulationNode[]>,
   linksRef: React.MutableRefObject<SimulationLink[]>,
@@ -24,7 +24,7 @@ export function createInitialNetwork(
   linksRef.current = [];
   const hubs: SimulationNode[][] = [];
 
-  // Create hubs and assign nodes to them
+  // New hubs, with nodes assigned to them
   for (let i = 0; i < numHubs; i++) {
     const hub: SimulationNode[] = [];
     for (let j = 0; j < nodesPerHub; j++) {
@@ -44,7 +44,7 @@ export function createInitialNetwork(
     hubs.push(hub);
   }
 
-  // Infect patient zero
+  // Initial infection (Only 1 atm but could be user provided)
   if (nodesRef.current.length > 0) {
     nodesRef.current[0].status = "infected";
     nodesRef.current[0].infectedAt = Date.now();
@@ -214,7 +214,7 @@ export function spreadInfection(
     }
   });
 
-  // Remove dead nodes
+  // Removing dead nodes
   nodesRef.current = nodesRef.current.filter((n) => !nodesToRemove.includes(n));
   linksRef.current = linksRef.current.filter((l) => {
     const source =
@@ -243,13 +243,13 @@ export function switchHubRoutine(
   interHubLinkDistance: number,
   intraHubLinkDistance: number
 ) {
-  // Build adjacency map for O(1) connection lookups
+  // Adjacency map for O(1) connection lookups
   const connectionMap = new Map<number, Set<number>>();
   const nodeById = new Map<number, SimulationNode>();
   const nodesByHub = new Map<number | null, SimulationNode[]>();
   const now = Date.now();
 
-  // Initialize maps
+  // Initializing the maps
   nodesRef.current.forEach((node) => {
     connectionMap.set(node.id, new Set());
     nodeById.set(node.id, node);
@@ -455,7 +455,7 @@ export function switchHubRoutine(
   });
 }
 
-// Grow community by adding new nodes
+// Growing the community by adding new nodes
 export function growCommunity(
   nodesRef: React.MutableRefObject<SimulationNode[]>,
   linksRef: React.MutableRefObject<SimulationLink[]>,
@@ -465,12 +465,13 @@ export function growCommunity(
   const count = params.growthRate;
 
   for (let i = 0; i < count; i++) {
-    // 60% chance to add to a hub, 40% chance to be hubless
+    // 60% chance to add to a hub, 40% chance to be hubless. Could be user provided.
     const useHub = Math.random() < 0.6;
 
     if (useHub && params.numHubs > 0) {
       const assignedHub = Math.floor(Math.random() * params.numHubs);
 
+      // New (alive) hubbed node
       const newNode: SimulationNode = {
         id: nextIdRef.current++,
         status: "healthy",
@@ -530,20 +531,20 @@ export function growCommunity(
         });
       }
     } else {
-      // Create a hubless node
+      // Creating a hubless node
       const newNode: SimulationNode = {
         id: nextIdRef.current++,
         status: "healthy",
         infectedAt: null,
         recoveredAt: null,
         vaccinatedAt: null,
-        alive: true,
+        alive: true, // Definitely alive
         currentHub: null,
         lastSwitchTime: Date.now(),
       };
       nodesRef.current.push(newNode);
 
-      // Connect to random nodes
+      // Connecting to random nodes
       const numConnections =
         params.minHublessConnections +
         Math.floor(

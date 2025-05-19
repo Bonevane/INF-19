@@ -4,7 +4,7 @@ import { SimulationParams, SimulationStatistics } from "../utils/types";
 import {
   createInitialNetwork,
   spreadInfection,
-  // switchHubRoutine,
+  switchHubRoutine,
   growCommunity,
   vaccinate,
 } from "../utils/simulationUtils";
@@ -186,7 +186,7 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
       )
       .force("charge", d3.forceManyBody().strength(params.chargeStrength))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .alphaDecay(0.02)
+      .alphaDecay(0.03)
       .alpha(0.08)
       .alphaMin(0.05)
       .velocityDecay(0.1)
@@ -253,17 +253,17 @@ const SimulationGraph: React.FC<SimulationGraphProps> = ({
       params.partialInfectionProb
     );
 
-    // Run network dynamics (hub switching)
-    // switchHubRoutine(
-    //   nodesRef,
-    //   linksRef,
-    //   params.hublessRewireProbability,
-    //   params.hubSwitchProbability,
-    //   params.interHubLinkStrength,
-    //   params.intraHubLinkStrength,
-    //   params.interHubLinkDistance,
-    //   params.intraHubLinkDistance
-    // );
+    // Hub Switching (Somewhat slow for >10k nodes)
+    switchHubRoutine(
+      nodesRef,
+      linksRef,
+      params.hublessRewireProbability,
+      params.hubSwitchProbability,
+      params.interHubLinkStrength,
+      params.intraHubLinkStrength,
+      params.interHubLinkDistance,
+      params.intraHubLinkDistance
+    );
 
     // Check if it's time to vaccinate
     if (Date.now() - simulationStartTimeRef.current > params.vaccineStartTime) {
