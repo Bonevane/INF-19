@@ -21,8 +21,8 @@ const StatisticsDisplay: React.FC<StatisticsDisplayProps> = ({
     statistics.healthy +
     statistics.infected +
     statistics.recovered +
-    statistics.vaccinated +
-    statistics.dead;
+    statistics.vaccinated;
+  // statistics.dead;
 
   const formatPercent = (value: number) => {
     if (totalPopulation === 0) return "0%";
