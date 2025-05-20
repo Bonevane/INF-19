@@ -25,6 +25,7 @@ export function createInitialNetwork(
   const hubs: SimulationNode[][] = [];
 
   // New hubs, with nodes assigned to them
+  // (Very similar to a simplified Stochastic Block Model)
   for (let i = 0; i < numHubs; i++) {
     const hub: SimulationNode[] = [];
     for (let j = 0; j < nodesPerHub; j++) {
@@ -50,7 +51,7 @@ export function createInitialNetwork(
     nodesRef.current[0].infectedAt = Date.now();
   }
 
-  // Create hubless nodes
+  // Create hubless nodes (Somewhat like Erdős–Rényi?)
   for (let i = 0; i < initialHublessCount; i++) {
     const node: SimulationNode = {
       id: nextIdRef.current++,
@@ -233,6 +234,7 @@ export function spreadInfection(
 }
 
 // Hub switching logic
+// (Simplified version of a Dynamic Small-World Network)
 export function switchHubRoutine(
   nodesRef: React.MutableRefObject<SimulationNode[]>,
   linksRef: React.MutableRefObject<SimulationLink[]>,
