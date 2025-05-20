@@ -477,14 +477,14 @@ const SimulationControls: React.FC<SimulationControlsProps> = ({
                 </div>
               </label>
               <span className="text-xs font-medium text-gray-700">
-                {params.hubSwitchProbability.toFixed(2)}
+                {params.hubSwitchProbability.toFixed(3)}
               </span>
             </div>
             <input
               type="range"
               min="0"
               max="0.5"
-              step="0.01"
+              step="0.001"
               value={params.hubSwitchProbability}
               onChange={(e) => handleSliderChange(e, "hubSwitchProbability")}
               className="w-full"

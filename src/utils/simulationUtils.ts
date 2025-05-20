@@ -1,6 +1,8 @@
 import { SimulationNode, SimulationLink, SimulationParams } from "./types";
 import * as d3 from "d3";
 
+
+// Stochastic Block Model, Erdős–Rényi, Dynamic Small-World Network and Watts–Strogatz
 // Initializing a new network
 export function createInitialNetwork(
   nodesRef: React.MutableRefObject<SimulationNode[]>,
@@ -284,7 +286,7 @@ export function switchHubRoutine(
 
   // Process nodes
   nodesRef.current.forEach((node) => {
-    // === 1. Hubless Node Rewiring ===
+    // === 1. Hubless Node Rewiring === (Similar to Watts–Strogatz)
     if (node.currentHub === null && Math.random() < hublessRewireProbability) {
       // Get node's connections
       const connections = connectionMap.get(node.id);
@@ -385,7 +387,7 @@ export function switchHubRoutine(
             );
           });
 
-          // Remove some old hub links
+          // Remove some old hub links (Probability could be taken from user)
           const removeLinks = oldLinks.slice(
             0,
             Math.floor(oldLinks.length * 0.7)

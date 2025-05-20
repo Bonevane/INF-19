@@ -2,11 +2,11 @@ import { SimulationParams } from "./types";
 
 export const defaultSimulationParams: SimulationParams = {
   // HUBS
-  numHubs: 10,
+  numHubs: 20,
   nodesPerHub: 30,
 
   // HUBLESS NODES
-  initialHublessCount: 200,
+  initialHublessCount: 800,
   minHublessConnections: 5,
   numHublessConnections: 5,
   hublessRewireProbability: 0.05,
@@ -15,7 +15,7 @@ export const defaultSimulationParams: SimulationParams = {
   minIntraHubConnections: 3,
   numIntraHubConnections: 3,
   numInterHubConnections: 3,
-  hubSwitchProbability: 0,
+  hubSwitchProbability: 0.005,
   interHubLinkStrength: 0.05,
   intraHubLinkStrength: 0.9,
   interHubLinkDistance: 140,
@@ -29,8 +29,8 @@ export const defaultSimulationParams: SimulationParams = {
   partialInfectionProb: 0.01,
   recoveryTime: 15000,
   vaccinationProbability: 0.3,
-  vaccineStartTime: 100000,
-  immunityDuration: 30000,
+  vaccineStartTime: 50000,
+  immunityDuration: 60000,
 
   // SIMULATION PARAMETERS
   chargeStrength: -100,
